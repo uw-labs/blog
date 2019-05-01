@@ -1,1 +1,7 @@
-theme: jekyll-theme-cayman
+# Site settings
+title: UW Labs
+description: > # this means to ignore newlines until "baseurl:"
+  Utility Warehouse Ltd Labs Blogposts
+
+# Build settings
+markdown: kramdown

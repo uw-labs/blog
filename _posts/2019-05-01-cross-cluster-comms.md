@@ -1,3 +1,10 @@
+---
+layout: post
+title: "Dynamic Cross Cluster Route Propagation using GoBGP"
+date: "2019-05-01 11:32:02 +0100"
+categories: kubernetes
+---
+
 # Dynamic Cross Cluster Route Propagation using GoBGP
 
 ## Topology
@@ -24,7 +31,7 @@ PING 10.22.20.82 (10.22.20.82) 56(84) bytes of data.
 
 Adding a bgp route reflector will give us the following example network topology:
 
-![alt text](bgp_simple.png "bgp-simple-rr-topology")
+![bgp-simple]({{site.url}}/blog/png/bgp_simple.png){:class="img-responsive"}
 
 In each cluster we deploy 3 `gobgp` instances (one per availability zone for redundancy) and we use static ips for each one of them. 
 
@@ -164,7 +171,7 @@ Gcp:
 Now that we have 2 different autonomous bgp clusters we can pair them by establishing eBGP connections between the static gobgp instances of each side.
 In order to do that and as we do not actually want to route any packets between hosts (remember we have a flat network and host reachability) we need to use the route server feature (https://github.com/osrg/gobgp/blob/master/docs/sources/route-server.md).
 
-![alt text](bgp_multi.png "bgp-cross-cluster-advertisement-topology")
+![bgp-multi]({{site.url}}/blog/png/bgp_multi.png){:class="img-responsive"}
 
 For that purpose we add configuration on all gobgp instances to inform about the respective ones on the other cluster and filters to allow advertisement only of the pod networks.
 

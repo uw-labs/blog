@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Kubernetes Semaphore: A simple framework to automate cross cluster communication"
+title: "Kubernetes Semaphore: How it works - Deep dive"
 date: ""
 categories: kubernetes
 ---
@@ -122,7 +122,7 @@ clusters running semaphore-wireguard would look like:
 
 ## Semaphore-Service-Mirror
 
-[Semaphore-Service-Mirror](https://github.com/utilitywarehouse/semaphore-service-mirror) is an controller responsible for mirroring services
+[Semaphore-Service-Mirror](https://github.com/utilitywarehouse/semaphore-service-mirror) is a controller responsible for mirroring services
 from one Kubernetes cluster to another. We describe service mirroring as:
 - Creating a local Kubernetes Cluster-IP service
 - Adding a custom local Endpoints resource for the above service which includes

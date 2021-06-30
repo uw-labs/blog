@@ -155,7 +155,7 @@ the available endpoints. Moreover, the mirrored service is a local Kubernetes
 cluster-IP service and will be implemented based on how the cluster is
 configured to deploy services (for example ipvs or iptables).
 
-Finally, if we follow this CoreDNS [trick](https://github.com/utilitywarehouse/semaphore-service-mirror#coredns-config-example), we will be able to resolve the
+Finally, if we follow this CoreDNS [configuration](https://github.com/utilitywarehouse/semaphore-service-mirror#coredns-config-example), we will be able to resolve the
 mirrored service in a rational manner:
 
 ```

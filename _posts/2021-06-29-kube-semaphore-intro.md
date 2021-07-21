@@ -104,7 +104,7 @@ Combined with WireGuard for in-cluster traffic (offered by Calico), the end
 result will be a full mesh between all nodes in our clusters and all traffic
 travelling between nodes via the created WireGuard network.
 
-A deployment example can be found
+Controller DaemonSet deployment example can be found
 [here](https://github.com/utilitywarehouse/semaphore-wireguard/tree/main/deploy/example)
 
 The following diagram illustrates the created WireGuard mesh between our hosts,
@@ -120,11 +120,9 @@ endpoints that live in a remote cluster.
 
 The mirroring controller will create local Services in the cluster and will
 update the list of endpoints with the IP addresses of Pods from the remote
-cluster. We benefit here by using a Kubernetes ClusterIP Service
-(implementation on the host via iptables or IPVS) but we will be effectively
-targeting remote workloads when sending traffic towards a mirrored service.
+cluster. The end result is simply a Kubernetes Service of type ClusterIP.
 
-A deployment example can be found
+Controller deployment example can be found
 [here](https://github.com/utilitywarehouse/semaphore-service-mirror/tree/master/deploy/example)
 
 For example, assuming that we have a Service resource in AWS cluster as:
@@ -168,9 +166,7 @@ Endpoints:         10.2.3.19:8889,10.2.4.19:8889,10.2.7.18:8889
 
 Since our controller will be watching the remote resources and updating on any
 event, the mirrored service should always have up to date information regarding
-the available endpoints. Mirrored service is a local Kubernetes clusterIP
-Service and will be implemented based on how the cluster is configured to
-deploy services (for example IPVS or iptables).
+the available endpoints.
 
 Finally, if we follow this CoreDNS
 [configuration](https://github.com/utilitywarehouse/semaphore-service-mirror#coredns-config-example),
@@ -201,7 +197,7 @@ local NetworkSets with all the discovered IP addresses. Then we can use simple
 labels to describe those sets inside a Calico Network Policy and effectively
 implement cross cluster firewall rules.
 
-A deployment example can be found
+Controller deployment example can be found
 [here](https://github.com/utilitywarehouse/semaphore-policy/tree/main/deploy)
 
 For example, let's consider the following deployment in our GCP cluster:
@@ -273,3 +269,17 @@ spec:
 
 The above rule will allow traffic from our remote "forwarder" to our local
 Service "fluentd".
+
+# Outro
+
+This setup works really well for us, but is definitely isn't universal, fits
+all solution. If it works for you - great, if not - we hope you can take away
+something useful from it.
+
+We heavily lean on and defer complexity to Calico and WireGuard, so huge tip of
+the hat to those two projects that enabled our solution. It also means we can
+have high level of confidence in our setup, that only orchestrates around other
+primitives.
+
+You can find more of our projects at https://github.com/uw-labs/ and
+https://github.com/utilitywarehouse/

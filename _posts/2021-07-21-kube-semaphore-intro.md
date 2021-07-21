@@ -2,7 +2,7 @@
 layout: post
 title: "Kubernetes Semaphore: A modular and nonintrusive framework for cross
 cluster communication"
-date: "2021-06-29 16:26:00 +0100"
+date: "2021-07-21 11:00:00 +0100"
 categories: kubernetes, multicluster
 ---
 

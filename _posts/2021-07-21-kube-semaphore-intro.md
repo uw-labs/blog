@@ -12,7 +12,7 @@ Having an environment span 3 clusters across 3 different providers (AWS, GCP
 and on-prem), we want applications running in different clusters to be able to
 communicate to each other. Specific objectives are:
 
-- Pod to Pod comms are encrypted across clusters
+- Cross cluster pod networking and encryption
 - Ability to target a remote cluster Kubernetes Service
 - Add rules to allow certain applications from a remote cluster talk to local
   endpoints
@@ -91,14 +91,18 @@ implementations. Also, the footprint on a remote cluster is minimal, as the
 only thing needed for local controllers to work is a set of service accounts
 that will alllow watching the resources of interest.
 
-# Encryption
+# Routing and Encryption
 
 [Semaphore-Wireguard](https://github.com/utilitywarehouse/semaphore-wireguard)
-is responsible for handling encryption between nodes of different clusters. It
-is essentially a WireGuard peer manager that runs on every node in every
-cluster and automates the peering between them. It is responsible for
-generating local keys and discovering all remote keys and endpoints to
-configure peering with all remote nodes.
+is responsible for handling encryption between nodes of different clusters and
+adding routes for remote pod subnets on local hosts. It is essentially a
+WireGuard peer manager that runs on every node in every cluster and automates
+the peering between them. It is responsible for generating local keys and
+discovering all remote keys and endpoints to configure peering with all remote
+nodes. Moreover, it is responsible for updating local route tables in order to
+direct all traffic going to remote pod subnets via the host's WireGuard
+interfaces. As a result, pods can reach pods from remote clusters utilizing the
+WireGuard mesh created between nodes in all clusters.
 
 Combined with WireGuard for in-cluster traffic (offered by Calico), the end
 result will be a full mesh between all nodes in our clusters and all traffic
